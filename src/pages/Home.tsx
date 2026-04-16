@@ -50,6 +50,7 @@ const Home = () => {
   const handleAddToCart = (product: Product) => {
     dispatch(addToCart({ ...product, quantity: 1 }));
     // Optional: toast notification add kar sakte ho
+    // Optional: toast notification add kar sakte ho
   };
 
   return (
