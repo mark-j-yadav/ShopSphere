@@ -1,175 +1,90 @@
-# 🛍️ ShopSphere – Modern E-commerce Frontend
+# ShopSphere
 
-ShopSphere is a **feature-rich E-commerce frontend application** built using **React + TypeScript**. It is designed to demonstrate real-world frontend architecture, combining advanced state management, clean UI, and scalable code practices.
+A React and TypeScript storefront demo built to showcase product discovery, client-side state management, and a multi-page shopping flow. ShopSphere uses a local mock catalog and a simulated checkout, making it a compact portfolio example of an e-commerce frontend.
 
-This project is ideal for:
+## What you can explore
 
-* 💼 Freelancing portfolio
-* 🧑‍💻 Interview preparation
-* 🚀 Practicing modern frontend development
+- **Product catalog:** Browse 12 sample products, search names and descriptions with a debounced input, filter by category, and sort by price or rating.
+- **Product details:** View pricing, descriptions, stock labels, optional size labels, and product-specific reviews. Submit a guest review with a 1–5 star rating.
+- **Shopping cart:** Add products, adjust quantities, remove items, clear the cart, and see a subtotal in the cart page or the navbar mini cart.
+- **Checkout demo:** Enter contact and delivery details, choose a displayed payment method, and submit a simulated order that clears the cart.
+- **Interface:** Responsive product grid, light/dark theme control, and toast messages for actions on the product page.
 
----
+Prices in the demo are displayed in Indian rupees (₹).
 
-# ✨ Key Features
+## Stack
 
-## 🛒 E-commerce Functionality
+| Area | Technology |
+| --- | --- |
+| UI | React 19.2.4, TypeScript 5.9.3 |
+| Routing | React Router DOM 7.13.2 |
+| State | Redux Toolkit 2.11.2, React Redux 9.2.0; Context API for theme |
+| Styling | Tailwind CSS 4.2.2 with the Vite plugin, Lucide React icons |
+| Tooling | Vite 8.0.1, ESLint 9 |
 
-* Product listing with **search, category filter & sorting**
-* Product detail page with **dynamic routing**
-* Add to Cart with **quantity management**
-* Wishlist system
-* Mini cart preview in navbar
-* Full shopping cart page
-* Checkout page with form handling
+Versions above reflect the dependency declarations in `package.json` (which use caret or tilde ranges).
 
-## 💬 User Interaction
+## Run locally
 
-* Customer reviews & comments per product
-* Toast notification system for actions
-
-## 🎨 UI/UX
-
-* Fully responsive design
-* Dark / Light mode toggle
-* Clean and modern interface
-
-## 💾 Data Persistence
-
-* State stored using **Redux Toolkit**
-* Data persistence via **localStorage**
-
----
-
-# 🧠 Tech Stack
-
-* **React 18 + TypeScript**
-* **Vite** (Fast build tool)
-* **Redux Toolkit** (State management)
-* **React Router v6** (Routing)
-* **Context API** (Theme management)
-* **Tailwind CSS** (Styling)
-* **Lucide React** (Icons)
-
----
-
-# 🚀 Getting Started
-
-## 1️⃣ Install Dependencies
+Have Node.js and npm installed, then run:
 
 ```bash
+git clone https://github.com/mark-j-yadav/ShopSphere.git
+cd ShopSphere
 npm install
-```
-
-## 2️⃣ Run Development Server
-
-```bash
 npm run dev
 ```
 
-👉 Open: http://localhost:5173
+Open the local URL printed by Vite (typically `http://localhost:5173`). The catalog is bundled in `src/data/mockProducts.ts`; no API keys or backend setup are required.
 
----
+### Available scripts
 
-# 📁 Project Structure
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the Vite development server. |
+| `npm run build` | Run the TypeScript project build, then create a production bundle in `dist/`. |
+| `npm run preview` | Serve the production bundle locally after building. |
+| `npm run lint` | Run ESLint over the project. |
 
-```bash
+## Routes
+
+| Path | Screen |
+| --- | --- |
+| `/` | Catalog, search, category filter, and sorting |
+| `/product/:id` | Product details and guest reviews; unknown IDs show “Product not found” |
+| `/cart` | Cart items, quantity controls, and order summary |
+| `/wishlist` | Wishlist screen with remove and move-to-cart controls for items in state |
+| `/checkout` | Simulated checkout form; an empty cart redirects to `/cart` |
+| Any other path | In-app 404 screen |
+
+## Project layout
+
+```text
 src/
-├── app/              # Redux store configuration
-├── features/         # Redux slices (cart, wishlist, toast, comment)
-├── context/          # Theme context (dark/light mode)
-├── hooks/            # Custom hooks (useDebounce)
-├── components/       # Reusable UI components
-├── pages/            # Application pages
-├── types/            # TypeScript interfaces
-├── data/             # Mock product data
-├── routes/           # Route configuration
-├── App.tsx
-└── main.tsx
+├── app/store.ts                 # Redux store
+├── assets/                      # Bundled images and starter assets
+├── components/                  # Navbar, toast, toast container
+├── context/ThemeContext.tsx     # Theme state and localStorage setting
+├── data/mockProducts.ts         # Sample catalog
+├── features/                    # Cart, wishlist, comment, and toast slices
+├── hooks/                       # Debounce and localStorage hooks
+├── pages/                       # Home, product, cart, wishlist, checkout
+├── types/index.ts               # Shared TypeScript types
+├── App.tsx                      # Providers and route definitions
+├── index.css                    # Tailwind import
+└── main.tsx                     # React entry point
 ```
 
----
+## Current scope and limitations
 
-# 🛍️ Available Routes
+- This is a **frontend demo**. Products are hard-coded, images come from Picsum, and there is no inventory service, account system, order API, or payment integration. Selecting card or UPI in checkout does not process a payment; submission shows a success alert and clears the cart.
+- Cart, wishlist, and reviews live in the Redux store **only for the current page session**. They reset on refresh. The theme preference is the only active localStorage persistence; `useLocalStorage` exists but is not wired into those slices.
+- The catalog's heart buttons have no click handler, so the wishlist cannot currently be populated through the UI. The navbar search box, profile button, and mobile menu content are also unfinished; use the search field on the home page.
+- The theme control sets a `dark` class on the document, but the Tailwind 4 setup does not define a class-based dark variant. The visible effect of `dark:` styles can therefore follow the system color preference instead of the toggle.
+- The current source has unused imports/state while TypeScript enables `noUnusedLocals`, so `npm run build` needs those code issues resolved before a production bundle can be generated. The build command above documents the existing script, not a verified passing build.
 
-| Route          | Description               |
-| -------------- | ------------------------- |
-| `/`            | Product listing (Home)    |
-| `/product/:id` | Product details + reviews |
-| `/cart`        | Shopping cart page        |
-| `/wishlist`    | Wishlist page             |
-| `/checkout`    | Checkout page             |
+## Author
 
----
+**Mark J Yadav** · [GitHub](https://github.com/mark-j-yadav)
 
-# ⚙️ Core Concepts Covered
-
-* ⚛️ React Hooks (useState, useEffect, useContext, etc.)
-* 🧩 Redux Toolkit (Slices, Store, Actions)
-* 🌐 Context API with custom provider
-* 🔀 React Router (dynamic routing & navigation)
-* 🧾 TypeScript interfaces & type safety
-* 🔁 Custom hooks (useDebounce)
-* 📝 Form handling & validation
-* 🔔 Toast notification system
-* 💾 LocalStorage persistence
-* 🎨 Responsive UI with Tailwind CSS
-
----
-
-# 🛠️ How to Use
-
-1. Browse products on the homepage
-2. Use search and filters to find products
-3. Click on a product to view details
-4. Add items to cart or wishlist
-5. Write reviews on product page
-6. Toggle dark/light mode from navbar
-7. Complete checkout process (mock)
-
----
-
-# 📝 Notes
-
-* This is a **frontend-only project** (no backend integration)
-* All products are **mock data**
-* Cart, wishlist, comments & theme are stored in **localStorage**
-* Designed for **learning and portfolio purposes**
-
----
-
-# 🚀 Future Enhancements
-
-* 🔐 User authentication system
-* 📦 Order history page
-* 💳 Payment gateway integration
-* 🖼️ Product image gallery
-* 🎬 Add-to-cart animations
-* 💰 Price range filter
-
----
-
-# 👨‍💻 Author
-
-**Mark J Yadav And Mfg **
-
-* Full Stack Developer 
-* Focused on building SaaS & freelance-ready projects
-
----
-
-# ⭐ Support
-
-If you found this project helpful:
-
-* Give it a ⭐ on GitHub
-* Share it with others
-
----
-
-# 📄 License
-
-This project is licensed under the MIT License.
-
----
-
-> Made with ❤️ to master modern frontend development
+ShopSphere is a portfolio project demonstrating a storefront UI and its client-side architecture.
