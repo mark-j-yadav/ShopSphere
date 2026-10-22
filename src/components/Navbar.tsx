@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import type{ RootState } from '../app/store';
-import { clearCart } from '../features/cart/cartSlice';
 import { useTheme } from '../context/ThemeContext';
 import { ShoppingCart, Heart, User, Sun, Moon, Menu, X } from 'lucide-react';
 
@@ -43,6 +42,7 @@ const Navbar = () => {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
               className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               {theme === 'dark' ? <Sun size={22} /> : <Moon size={22} />}

@@ -79,9 +79,9 @@ src/
 
 - This is a **frontend demo**. Products are hard-coded, images come from Picsum, and there is no inventory service, account system, order API, or payment integration. Selecting card or UPI in checkout does not process a payment; submission shows a success alert and clears the cart.
 - Cart, wishlist, and reviews live in the Redux store **only for the current page session**. They reset on refresh. The theme preference is the only active localStorage persistence; `useLocalStorage` exists but is not wired into those slices.
-- The catalog's heart buttons have no click handler, so the wishlist cannot currently be populated through the UI. The navbar search box, profile button, and mobile menu content are also unfinished; use the search field on the home page.
-- The theme control sets a `dark` class on the document, but the Tailwind 4 setup does not define a class-based dark variant. The visible effect of `dark:` styles can therefore follow the system color preference instead of the toggle.
-- The current source has unused imports/state while TypeScript enables `noUnusedLocals`, so `npm run build` needs those code issues resolved before a production bundle can be generated. The build command above documents the existing script, not a verified passing build.
+- Catalog heart buttons toggle products in the wishlist. The navbar search box, profile button, and mobile menu content are still unfinished; use the search field on the home page.
+- The theme control sets a `dark` class on the document, and Tailwind 4 uses a class-based dark variant so `dark:` styles follow the toggle. The selected theme persists across refreshes.
+- `npm run build` passes with TypeScript's `noUnusedLocals` checks enabled. `npm run lint` still reports existing issues with mixed component/hook exports in `ThemeContext.tsx` and a purity warning on `Date.now()` in the product review handler.
 
 ## Author
 
