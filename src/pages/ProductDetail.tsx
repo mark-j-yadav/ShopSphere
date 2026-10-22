@@ -107,7 +107,7 @@
 // export default ProductDetail;
 
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../features/cart/cartSlice';
@@ -129,7 +129,7 @@ const ProductDetail = () => {
 
   const [commentText, setCommentText] = useState('');
   const [userRating, setUserRating] = useState(5);
-  const [userName, setUserName] = useState('Guest User'); // Simple mock name
+  const userName = 'Guest User';
 
   if (!product) {
     return <div className="text-center py-20 text-2xl">Product not found</div>;

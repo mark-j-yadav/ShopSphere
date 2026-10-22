@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import type{ RootState } from '../app/store';
+import type { Product } from '../types';
 import { removeFromWishlist } from '../features/wishlist/wishlistSlice';
 import { addToCart } from '../features/cart/cartSlice';
 import { Trash2, ShoppingCart, ArrowLeft } from 'lucide-react';
@@ -9,7 +10,7 @@ const Wishlist = () => {
   const dispatch = useDispatch();
   const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
 
-  const handleAddToCart = (product: any) => {
+  const handleAddToCart = (product: Product) => {
     dispatch(addToCart({ ...product, quantity: 1 }));
     dispatch(removeFromWishlist(product.id)); // optional: wishlist se remove kar do
   };
@@ -51,6 +52,7 @@ const Wishlist = () => {
                   </button>
                   <button
                     onClick={() => dispatch(removeFromWishlist(product.id))}
+                    aria-label={`Remove ${product.name} from wishlist`}
                     className="p-3 border border-red-300 dark:border-red-700 text-red-500 rounded-xl hover:bg-red-50 dark:hover:bg-red-950"
                   >
                     <Trash2 size={20} />

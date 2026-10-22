@@ -1,7 +1,9 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '../app/store';
 import { addToCart } from '../features/cart/cartSlice';
+import { addToWishlist, removeFromWishlist } from '../features/wishlist/wishlistSlice';
 import { mockProducts } from '../data/mockProducts';
 import type { Product } from '../types';
 import { useDebounce } from '../hooks/useDebounce';
@@ -9,6 +11,7 @@ import { ShoppingCart, Heart, Star } from 'lucide-react';
 
 const Home = () => {
   const dispatch = useDispatch();
+  const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
   
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -97,7 +100,10 @@ const Home = () => {
 
       {/* Products Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredAndSortedProducts.map((product) => (
+        {filteredAndSortedProducts.map((product) => {
+          const isWishlisted = wishlistItems.some(item => item.id === product.id);
+
+          return (
           <div key={product.id} className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow hover:shadow-xl transition-all group">
             <Link to={`/product/${product.id}`}>
               <div className="relative">
@@ -141,13 +147,22 @@ const Home = () => {
                   <ShoppingCart size={18} /> Add to Cart
                 </button>
                 
-                <button className="p-3 border dark:border-gray-600 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700">
-                  <Heart size={20} />
+                <button
+                  type="button"
+                  onClick={() => dispatch(isWishlisted
+                    ? removeFromWishlist(product.id)
+                    : addToWishlist(product))}
+                  aria-label={`${isWishlisted ? 'Remove' : 'Add'} ${product.name} ${isWishlisted ? 'from' : 'to'} wishlist`}
+                  aria-pressed={isWishlisted}
+                  className="p-3 border dark:border-gray-600 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <Heart size={20} fill={isWishlisted ? 'currentColor' : 'none'} />
                 </button>
               </div>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
 
       {filteredAndSortedProducts.length === 0 && (
